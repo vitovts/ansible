@@ -1,4 +1,4 @@
-[pve]
+[proxmox]
 dev2        ansible_ssh_host=10.172.0.2     owner=dev2
 pve1        ansible_ssh_host=10.172.1.241   owner=pve1
 pve2        ansible_ssh_host=10.172.1.242   owner=pve2

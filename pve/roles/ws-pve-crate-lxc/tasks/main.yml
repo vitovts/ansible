@@ -11,7 +11,7 @@
     hostname: "{{ lxc_hostname }}"          # LXC Hostname:
     password: "{{ lxc_password }}"          # LXC Password:
     pubkey: "{{ lxc_pubkey }}"              # LXC SSh public key:
-    ostemplate: '/mnt/pve/omv/template/cache/{{ lxc_ostemplate }}'      # LXC Storage:/Template: local=ovm
+    ostemplate: 'local:vztmpl/{{ lxc_ostemplate }}'      # LXC Storage:/Template: local=ovm
     storage: "{{ lxc_storage }}"            # LXC Storage:            [default:local]
     disk: "{{ lxc_disk }}"                  # LXC Disk size (GiB):    [default:3:8]
     cores: "{{ lxc_cores }}"                # LXC Cores:              [default:1]
