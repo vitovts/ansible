@@ -1,7 +1,0 @@
-2021-05-06 11:48:30,595 p=1252 u=vitovts n=ansible | pve1 | SUCCESS => {
-    "changed": false,
-    "ping": "pong"
-}
-2021-05-06 11:54:01,109 p=1362 u=vitovts n=ansible | - Role ws-pve-crate-lxc was created successfully
-2021-05-06 11:54:21,933 p=1385 u=vitovts n=ansible | - Role roles/ws-pve-crate-lxc was created successfully
-2021-05-06 11:56:19,810 p=1485 u=vitovts n=ansible | - Role roles/ws-pve-start-lxc was created successfully
