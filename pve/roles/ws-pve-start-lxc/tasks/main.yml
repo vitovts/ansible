@@ -1,0 +1,14 @@
+---
+# tasks file for roles/ws-pve-start-lxc
+
+- name: Start LXC
+  community.general.proxmox:
+    vmid: "{{ lxc_vmid }}"
+    node: "{{ node }}"
+    api_user: "{{ api_user }}"
+    api_password: "{{ api_password }}"
+    api_host: "{{ api_host }}"
+    state: started
+    timeout: 90
+  notify:
+    - apt update 

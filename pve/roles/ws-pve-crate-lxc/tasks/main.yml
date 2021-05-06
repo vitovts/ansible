@@ -1,0 +1,29 @@
+---
+# tasks file for roles/ws-pve-crate-lxc
+
+- name: CREATE LXC 
+  community.general.proxmox:
+    node: pve1                              # pve
+    vmid: '{{ lxc_vmid }}'                  # LXC CT ID:
+    api_user: "{{ api_user }}"              # root@pam
+    api_password: "{{ api_password }}"      # pve password
+    api_host: "{{ api_host }}"              # pve
+    hostname: "{{ lxc_hostname }}"          # LXC Hostname:
+    password: "{{ lxc_password }}"          # LXC Password:
+    pubkey: "{{ lxc_pubkey }}"              # LXC SSh public key:
+    ostemplate: '/mnt/pve/omv/template/cache/{{ lxc_ostemplate }}'      # LXC Storage:/Template: local=ovm
+    storage: "{{ lxc_storage }}"            # LXC Storage:            [default:local]
+    disk: "{{ lxc_disk }}"                  # LXC Disk size (GiB):    [default:3:8]
+    cores: "{{ lxc_cores }}"                # LXC Cores:              [default:1]
+    cpuunits: "{{ lxc_cpuunits }}"          # LXC CPU units:          [default:1000]
+    memory: "{{ lxc_memory }}"              # LXC Memory (MiB):       [default:512]
+    swap: "{{ lxc_swap }}"                  # LXC Swap (MiB):         [default:0:512]
+    netif: '{"net0":"name=eth0,ip={{ lxc_ip }},gw={{ lxc_gw }},bridge={{ lxc_bridge }}"}'  # LXC Network      
+    #nameserver: "{{ lxc_nameserver }}"     # LXC DNS domain:
+    #searchdomain: "{{ lxc_searchdomain }}" # LXC DNS servers:
+    onboot: 'yes'                           # LXC Option Start on boot > Yes
+    unprivileged: 'yes'                     # LXC Option Unprivileged container > Yes
+    features:                               # LXC Option Feature 
+      - nesting=1                           # LXC Option Feature add Nesting (for docker)
+      - keyctl=1                            # LXC Option Feature add keyctl (for docker)
+    state: present
