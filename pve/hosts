@@ -8,4 +8,5 @@ ub16        ansible_ssh_host=10.172.1.180
 ub1604      ansible_ssh_host=10.172.1.181  owner=pve1 user=client1
 ub1804      ansible_ssh_host=10.172.1.182  owner=pve1 user=client2
 
-
+[suse]
+opensuse152	ansible_ssh_host=10.172.1.189

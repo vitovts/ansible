@@ -1,0 +1,26 @@
+---
+# tasks file for roles/suse
+- name: Update all packages
+  community.general.zypper:
+    name: '*'
+    state: latest
+    type: patch
+
+- name: Perform a dist-upgrade with additional arguments
+  community.general.zypper:
+    name: '*'
+    state: dist-upgrade
+    allow_vendor_change: true
+    extra_args: '--allow-arch-change'
+
+- name: Install '{{ item }}'
+  community.general.zypper:
+    name: '{{ item }}'
+    state: present
+  loop:
+    - python3
+    - python3-pip
+    - zip
+    - vim
+    - mc
+    - net-tools

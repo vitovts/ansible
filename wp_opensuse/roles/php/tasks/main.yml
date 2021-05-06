@@ -1,0 +1,28 @@
+---
+# tasks file for roles/php
+- name: Install php + 
+  community.general.zypper:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - php
+    - php7-fpm
+    - php-curl
+    - php-gd
+    - php-mbstring
+    - php-soap
+    - php-xml
+    - php-xmlrpc
+    - php-zip
+    - php-mysql
+    - php-cli
+    - php-ldap
+    - php-zip
+  tags: php
+      
+- name: Enable php-fpm
+  systemd:
+    name: php-fpm #OpenSUSE
+    state: restarted
+    enabled: yes
+  tags: php
