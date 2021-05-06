@@ -1,0 +1,11 @@
+[proxmox]
+dev2        ansible_ssh_host=10.172.0.2     owner=dev2
+pve1        ansible_ssh_host=10.172.1.241   owner=pve1
+pve2        ansible_ssh_host=10.172.1.242   owner=pve2
+
+[ubuntu]
+ub16        ansible_ssh_host=10.172.1.180
+ub1604      ansible_ssh_host=10.172.1.181  owner=pve1 user=client1
+ub1804      ansible_ssh_host=10.172.1.182  owner=pve1 user=client2
+
+
