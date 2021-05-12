@@ -1,5 +1,5 @@
 ---
-# Playbook PreInstall Slave jenkins (Ubuntu 1604 / 1804)
+# Playbook PreInstall Slave jenkins on Ubuntu
 - name: Install Jenkins
   hosts: "{{ jenkins_host }}"
   gather_facts: no
