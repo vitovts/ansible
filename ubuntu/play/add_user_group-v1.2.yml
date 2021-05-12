@@ -1,0 +1,26 @@
+# --- Playbook for add user
+---
+- name: CREATE USERS
+  hosts: ub1804
+  become: yes  #sudo
+
+  tasks:
+
+    - name: CREATE GROUPS
+      group:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - ws
+        - test
+
+    - name: CREATE USERS
+      user:
+        name: "{{ item.clientname }}"
+        shell: /bin/bash
+        groups: ws,test
+        append: yes
+        home: /home/{{ item.clienthomedir }}
+      with_items:
+        - {clientname: client11, homedir: client11}
+        - {clientname: client12, homedir: client12}

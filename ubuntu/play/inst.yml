@@ -1,0 +1,17 @@
+---
+- name: Install Jenkins
+  hosts: jenkins
+  gather_facts: no
+  become: yes  #sudo
+
+  tasks:
+    - name: Pause
+      pause:
+        minutes: 1   
+
+    - name: output
+      shell:  
+        cmd: "cat /etc/hosts"
+      register: cat
+    - debug: msg="{{ cat }}"
+    

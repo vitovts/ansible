@@ -1,0 +1,15 @@
+
+master
+ansible-playbook play/pve-create-lxc-v1.yml --ask-vault-password
+ansible-playbook play/jn-master-inst-ub1804-v1.yml --ask-vault-password
+>>> code
+>>> all plagin
+# add new user and configure
+ansible-playbook play/jn-inst-config-ub1804-v1.yml --ask-vault-password
+
+
+
+
+slave (node)
+ansible-playbook play/pve-create-lxc-v1.yml --ask-vault-password
+>> add 

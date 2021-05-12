@@ -1,4 +1,10 @@
 *.log
 ./log
 /log
+inventory
+hosts
+group_vars
+sait
+ansible.cfg
+
 

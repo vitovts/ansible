@@ -1,0 +1,24 @@
+# --- Playbook for add user
+---
+- name: CREATE USERS
+  hosts: ub1604
+  become: yes  #sudo
+
+  tasks:
+
+    - name: CREATE GROUPS
+      group:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - ws
+        - test
+
+    - name: CREATE USERS
+      user:
+        name: ws1
+        shell: /bin/bash
+        groups: ws,test
+        append: yes
+        home: /home/ws1
+        

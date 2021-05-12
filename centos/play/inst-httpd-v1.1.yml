@@ -1,0 +1,25 @@
+---
+# --- Playbook for install httpd centos
+- name: Instal Apache and Upload my Page
+  hosts: centos_srv
+  become: yes
+
+  vars:
+    source_file: ./site/index.html
+    destin_file: /var/www/html
+
+  tasks:
+
+  - name: Install Apache Web Server
+    yum: name=httpd state=latest
+
+  - name: Copy HomePage file to Web Server
+    copy: src={{ source_file }} dest={{ destin_file }} mode=0555
+    notify: Restart Apache
+
+  - name: Start Web Server service
+    service: name=httpd state=started enabled=yes
+
+  handlers:
+  - name: Restart Apache
+    service: name=httpd state=restarted

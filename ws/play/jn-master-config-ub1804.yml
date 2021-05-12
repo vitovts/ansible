@@ -1,0 +1,60 @@
+---
+# Playbook Configure master Jenkins (Ubuntu 1604 / 1804)
+- name: Install Jenkins
+  hosts: "{{ jenkins_host }}"
+  gather_facts: no
+  become: yes  #sudo
+
+  vars_files:
+    - vars_vault_jn.yml
+
+  vars_prompt:
+    - name: "jenkins_host"
+      prompt: "Enter hostname : "
+      default: jenkins
+      private: no
+
+  tasks:
+    - name: UPDATE (apt update -y)
+      apt:
+        update_cache: yes
+      register: apt_update
+    - debug: msg="{{ apt_update }}"
+
+    - name: UPGRADE (apt upgrade -y)
+      apt:
+        upgrade: 'yes'
+      register: apt_upgrade
+    - debug: msg="{{ apt_upgrade }}"
+
+    - name: Install packages  
+      apt:
+        name: '{{ item }}'
+        state: latest
+      loop:
+      - python3-pip
+      - zip
+      - vim
+      - mc
+      - git
+      - net-tools
+      - openjdk-8-jre
+      - gnupg
+      - gnupg[12]
+
+    #- name: CREATE FOLDER $HOME/.shh
+    #  file:
+    #    path: "~/.ssh"
+    #    state: directory
+    
+    - name: Generate an OpenSSH keypair with the default values (4096 bits, rsa)
+      community.crypto.openssh_keypair:
+        path: "~/.ssh"
+        force: yes
+
+    
+   
+
+
+    
+    

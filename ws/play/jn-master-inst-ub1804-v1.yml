@@ -1,0 +1,75 @@
+---
+- name: Install Jenkins
+  hosts: "{{ jenkins_host }}" 
+  gather_facts: no
+  become: yes  #sudo
+
+  vars_prompt:
+    - name: "jenkins_host"
+      prompt: "Enter hostname : "
+      default: jenkins
+      private: no
+
+
+  tasks:
+    - name: UPDATE (apt update -y)
+      apt:
+        update_cache: yes
+      register: apt_update
+    - debug: msg="{{ apt_update }}"
+
+    - name: UPGRADE (apt upgrade -y)
+      apt:
+        upgrade: 'yes'
+      register: apt_upgrade
+    - debug: msg="{{ apt_upgrade }}"
+
+    - name: Install packages  
+      apt:
+        name: '{{ item }}'
+        state: latest
+      loop:
+      - python3-pip
+      - zip
+      - vim
+      - mc
+      - git
+      - net-tools
+      - openjdk-8-jre
+      - gnupg
+      - gnupg[12]
+
+    - name: Add key
+      apt_key:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+        state: present
+      register: apt_key
+    - debug: msg="{{ apt_key }}" 
+
+    - name: Add repo
+      shell:  sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ >  /etc/apt/sources.list.d/jenkins.list'
+    
+    - name: UPDATE (apt update -y)
+      apt:
+        update_cache: yes
+
+    - name: Install packages  
+      apt:
+        name: jenkins
+        state: latest
+      register: jenkins
+    - debug: msg="{{ jenkins }}"
+
+    - name: Pause 1 minutes
+      pause:
+        minutes: 1   
+
+    - name: output code for jenkins
+      shell:  
+        cmd: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: cat
+    - debug: msg="{{ cat }}"
+    
+    # Input hash and ...
+
+    

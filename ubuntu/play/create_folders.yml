@@ -1,0 +1,15 @@
+---
+# --- Playbook to use loop for create folder
+- name: LOOP mkdir
+  hosts: UBUNTU
+  become: yes  #sudo
+
+  tasks:
+    - name: CREATE FOLDER
+      file:
+        path: "~/ws/{{ item }}"
+        state: directory
+      loop:
+        - ws1
+        - ws2
+        - ws3

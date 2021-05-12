@@ -1,0 +1,11 @@
+---
+# tasks file for roles/ws-pve-inst-proxmoxer
+- name: Pre-Install proxmoxer (pip)
+  apt:
+    name: python3-pip
+    state: latest
+
+- name: Install proxmoxer
+  pip:
+    name: proxmoxer
+  

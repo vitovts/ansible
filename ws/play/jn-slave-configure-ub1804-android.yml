@@ -1,0 +1,92 @@
+---
+# Playbook PreInstall Slave jenkins (Ubuntu 1604 / 1804) Android-SDK
+- name: Install Jenkins
+  hosts: "{{ jenkins_host }}"
+  gather_facts: no
+  become: yes  #sudo
+  become_method: sudo
+  
+  environment:
+    ANDROID_HOME: /usr/lib/android-sdk
+    PATH: $ANDROID_HOME/cmdline-tools/tools/bin:$PATH
+    # PATH=$ANDROID_HOME/cmdline-tools/tools/bin:$PATH
+    # PATH: /var/local/nvm/versions/node/v4.2.1/bin:{{ ansible_env.PATH }}
+
+  vars_prompt:
+    - name: "jenkins_host"
+      prompt: "Enter hostname : "
+      default: jenkins
+      private: no
+
+  tasks:
+    - name: UPDATE (apt update -y)
+      apt:
+        #update_cache: yes
+      register: apt_update
+    - debug: msg="{{ apt_update }}"
+
+    #- name: UPGRADE (apt upgrade -y)
+    # apt:
+    #    upgrade: 'yes'
+    #  register: apt_upgrade
+
+    #- debug: msg="{{ apt_upgrade }}"
+
+    - name: Install tools for adding PPA repositories
+      become: true
+      apt:
+        name: software-properties-common
+        state: latest
+    
+    - name: Install packages  
+      apt:
+        name: '{{ item }}'
+        state: present
+        #update_cache: true
+      loop:
+      - python3-pip
+      - zip
+      - vim
+      - unzip
+      - mc
+      - git
+      - net-tools
+      - openjdk-8-jre
+      #- openjdk-8-jdk-headless
+      - gnupg
+      - gnupg[12]
+      #- android-sdk adb
+
+      
+    - name: CREATE FOLDER for Jenkins jobs
+      file:
+        path: "/usr/jenkins/"
+        state: directory
+        mode: '0777'
+
+    - name: CREATE FOLDER for 
+      file:
+        path: "/usr/lib/android-sdk/cmdline-tools/tools/"
+        state: directory
+        mode: '0777'
+
+    
+    
+
+    - name: Unarchive a file that needs to be downloaded (added in 2.0)
+      ansible.builtin.unarchive:
+        src: https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip
+        dest: /usr/lib/android-sdk/cmdline-tools/tools/
+        remote_src: yes
+
+
+
+
+
+  # add 
+  # add user 
+  # mkdir ~{{user}}/.ssh
+  # echo "ssh-rsa in master jenkins"  ~{{user}}/.ssh/authorized_keys
+  # add /etc/hosts ip ....
+
+

@@ -1,0 +1,18 @@
+---
+- name: Playbook will fail if hosts not specified via --limit option.
+  # Hosts must be set via limit. 
+  hosts: "{{ play_hosts }}"
+  connection: local
+  gather_facts: false
+  tasks:
+  - set_fact:
+      inventory_hosts: []
+  - set_fact:
+      inventory_hosts: "{{inventory_hosts + [item]}}"
+    with_items: "{{hostvars.keys()|list}}"
+
+  - meta: end_play
+    when: "(play_hosts|length) == (inventory_hosts|length)"
+
+  - debug:
+      msg: "About to execute tasks/roles for {{inventory_hostname}}"

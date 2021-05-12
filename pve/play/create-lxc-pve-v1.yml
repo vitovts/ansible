@@ -1,0 +1,68 @@
+---
+# Playbook Create LXC in ProxMox (PVE) 
+# out vars files
+- hosts: "{{ pve_host }}"           # host proxmox
+  gather_facts: no      # no env
+  become: yes           # sudo
+  
+  vars_files:
+    - vars_vault_{{ pve_host }}.yml
+  
+  roles:
+    - ws-pve-crate-lxc
+    - ws-pve-start-lxc
+
+  vars_prompt:
+    - name: "pve_host"
+      prompt: "Enter hostname PVE (pve_host): "
+      default: pve1
+      private: no
+    - name: "lxc_vmid"
+      prompt: "Enter VMID for new LXC: "
+      default: 1199
+      private: no
+    - name: "lxc_ip"
+      prompt: "Enter IP for new LXC: "
+      default: 10.172.1.199/16
+      private: no
+    - name: "lxc_bridge"
+      prompt: "Enter Bridge for new LXC: "
+      default: vmbr0
+      private: no
+    - name: "lxc_ostemplate"
+      prompt: "Enter OS_Template for new LXC: "
+      default: "ubuntu-18.04-standard_18.04.1-1_amd64.tar.gz"
+      private: no
+    - name: "lxc_hostname"
+      prompt: "Enter hostname for new LXC: "
+      default: "test.com"
+      private: no
+    - name: "lxc_password"
+      prompt: "Enter root password for new LXC: "
+      default: "password"
+      private: no
+    - name: "lxc_cores"
+      prompt: "Enter CORES: "
+      default: 1
+      private: no
+    - name: "lxc_cpuunits"
+      prompt: "Enter CORES: "
+      default: 1000
+      private: no
+    - name: "lxc_memory"
+      prompt: "Enter Memory (RAM) for new LXC (MiB): "
+      default: 1024
+      private: no
+    - name: "lxc_swap"
+      prompt: "Enter SWAP for new LXC (MiB): "
+      default: 512
+      private: no
+    - name: "lxc_disk"
+      prompt: "Enter Disk(HDD) for new LXC (GiB): "
+      default: 8
+      private: no
+    - name: "lxc_storage"
+      prompt: "Enter name storage for new LXC: "
+      default: local-lvm
+      private: no
+

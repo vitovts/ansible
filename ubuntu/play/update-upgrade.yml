@@ -1,0 +1,19 @@
+---
+- name: Update and Upgrade 
+  hosts: jenkins
+  gather_facts: no
+  become: yes  #sudo
+
+
+  tasks:
+    - name: UPDATE (apt update -y)
+      apt:
+        update_cache: yes
+      register: apt_update
+    - debug: msg="{{ apt_update }}"
+
+    - name: UPGRADE (apt upgrade -y)
+      apt:
+        upgrade: 'yes'
+      register: apt_upgrade
+    - debug: msg="{{ apt_upgrade }}"

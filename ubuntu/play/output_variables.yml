@@ -1,0 +1,37 @@
+---
+#
+- name: Playbook for Variables Lesson
+  hosts: ubuntu
+  become: yes
+
+  vars:
+    message1: Hi
+    message2: How are you?
+    secret: SuperPuperSecretWorld
+
+  tasks:
+
+    - name: Print Secret variable
+      debug:
+        var: secret
+
+    - debug:
+        msg: "<Secret World>: {{ secret }}"
+
+    - debug:
+        msg: "Owner You Server --> {{ owner }} <--"
+
+    - set_fact: full_message="{{ message1 }} {{ message2 }} from {{ owner }}"
+
+    - debug:
+        var: full_message
+
+    - debug:
+        var: ansible_distribution
+
+    - shell: uptime
+      register: result
+
+    - debug:
+        var: result.stdout
+

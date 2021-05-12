@@ -1,0 +1,17 @@
+---
+# Playbook for update and upgrade ProxMox > variables
+- name: Update and Upgrade ProxMox
+  hosts: "{{ pve_host }}" 
+  gather_facts: no
+  become: yes  #sudo
+
+  vars_prompt:
+    - name: "pve_host"
+      prompt: "Enter hostname PVE (pve_host): "
+      default: pve1
+      private: no
+
+  roles:
+    - ws-pve-inst-proxmoxer
+    
+

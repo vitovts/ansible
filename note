@@ -1,0 +1,51 @@
+Automation Configuration Management Tools
+
+# --- Type: ---
+- pull > install agent (pull config with master)
+    - CHEF
+    - puppet
+    - SALTSTACK
+
+- push > not install agent (push config master)
+    - ANSIBLE
+
+made in Red Hat
+opensource
+Red Hat Ansible Tower
+
+# --- Type: ---
+
+# --- Control Server - Master server ---
+- Linux only
+- Python3
+
+# --- Controlled Servers - Managed Servers ---
+- Linux (Admin log/passwd or SSH key and Python3) SSH Port 22
+- WinX (Admin log/passws, PowerShell 4 and run script /configureRemotingForAnsible.ps1) WinnRM port 5986
+
+# --- Install ---
+
+
+
+
+
+# Ansible-secret
+
+ansible-vault       create          mysecret.txt
+                    view
+                    edit            mysecret.txt
+
+                    rekey           mysecret.txt
+
+                    encrypt
+                    decrypt
+
+                    encrypt_script
+echo -n "passwd" | ansible-vault encrypt_string
+
+ansyble-playbook    playbook.yml    --ask-vault-pass
+                                    --vault-password-file passwd.txt
+
+
+
+

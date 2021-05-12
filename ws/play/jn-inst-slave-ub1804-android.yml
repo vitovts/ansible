@@ -1,0 +1,123 @@
+---
+# Playbook PreInstall Slave jenkins (Ubuntu 1604 / 1804) Android-SDK
+- name: Install Jenkins
+  hosts: "{{ jenkins_host }}"
+  gather_facts: no
+  become: yes  #sudo
+  become_method: sudo
+
+  vars_files:
+    - vars_vault_jn.yml
+
+  vars_prompt:
+    - name: "jenkins_host"
+      prompt: "Enter hostname : "
+      default: jn-n1-ub1804
+      private: no
+    - name: "jenkins_user"
+      prompt: "Enter username for jenkins (jnadm) : "
+      default: jnadm
+      private: no
+
+  tasks:
+    - name: UPDATE (apt update -y)
+      apt:
+        update_cache: yes
+      register: apt_update
+    - debug: msg="{{ apt_update }}"
+
+    - name: UPGRADE (apt upgrade -y)
+      apt:
+        upgrade: 'yes'
+      register: apt_upgrade
+    - debug: msg="{{ apt_upgrade }}"
+
+    - name: Install packages  
+      apt:
+        name: '{{ item }}'
+        state: latest
+      loop:
+      - python3-pip
+      - zip
+      - vim
+      - mc
+      - git
+      - net-tools
+      - openjdk-8-jre
+      - gnupg
+      - gnupg[12]
+
+    - name: CREATE USERS for jenkins
+      user:
+        name: "{{ jenkins_user }}"
+        password: "{{ password }}"
+        shell: /bin/bash
+        groups: root 
+        append: yes
+        home: /home/{{ jenkins_user }}
+        comment: jenkins administrator > "{{ jenkins_user }}"
+
+    - name: CREATE FOLDER for Jenkins jobs
+      file:
+        path: "/usr/jenkins/"
+        state: directory
+        mode: '0777'
+        owner: "{{ jenkins_user }}"
+        group: "{{ jenkins_user }}"
+
+    - name: CREATE FOLDER $HOME/.shh
+      file:
+        path: "/home/{{ jenkins_user }}/.ssh"
+        state: directory
+        mode: '0644'
+        owner: "{{ jenkins_user }}"
+        group: "{{ jenkins_user }}"
+    
+    - name: adding ansible user to sudoers
+      lineinfile: 
+        dest: /etc/sudoers 
+        line: "{{ jenkins_user }} ALL=(ALL:ALL)       NOPASSWD: ALL" 
+        validate: 'visudo -cf %s'
+
+    - name: Change file ownership, group and permissions
+      ansible.builtin.file:
+        path: /home/{{ jenkins_user }}/.ssh/authorized_keys
+        owner: "{{ jenkins_user }}"
+        group: "{{ jenkins_user }}"
+        mode: '0777'
+        state: touch
+
+    
+    #- group: name=sudo state=present
+    
+    #- name: copy ssh pubkey to home directory
+    #  authorized_key: 
+    #    user: "{{ jenkins_user }}"
+    #    key: "{{ lookup('file', '/home/{{ jenkins_user }}/.ssh/authorized_keys') }}"
+
+
+
+    - name: Ansible insert a line before example
+      lineinfile:
+        path: /home/{{ jenkins_user }}/.ssh/authorized_keys
+        line: '{{ jnadm_sshkey }}'
+        insertbefore: # ---
+
+    #- name: add in file
+    #  local_action:
+    #    module: copy
+    #    content: "{{ jnadm_sshkey }}"
+    #    dest: /home/{{ jenkins_user }}/.ssh/authorized_keys
+
+  
+
+
+    
+    #- name: Copy file authorized_keys 
+    #  copy:
+    #    src: /home/{ jenkins_user }}/
+    #    dest: ~/
+    #    mode: 0640
+    # >>> visudo? jnadm ALL=(ALL:ALL) NOPASSWD: ALL
+
+    

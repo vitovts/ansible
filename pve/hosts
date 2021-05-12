@@ -2,11 +2,26 @@
 dev2        ansible_ssh_host=10.172.0.2     owner=dev2
 pve1        ansible_ssh_host=10.172.1.241   owner=pve1
 pve2        ansible_ssh_host=10.172.1.242   owner=pve2
+pve-ws			ansible_ssh_host=10.172.1.239   owner=pve-ws
+
+
 
 [ubuntu]
-ub16        ansible_ssh_host=10.172.1.180
-ub1604      ansible_ssh_host=10.172.1.181  owner=pve1 user=client1
-ub1804      ansible_ssh_host=10.172.1.182  owner=pve1 user=client2
+ub16        ansible_ssh_host=10.172.1.180	owner=pve1
+ub1604      ansible_ssh_host=10.172.1.181 owner=pve1 user=client1
+ub1804      ansible_ssh_host=10.172.1.182 owner=pve1 user=client2
+ub2004      ansible_ssh_host=10.172.1.183 owner=pve1 
+ub2010      ansible_ssh_host=10.172.1.184 owner=pve1
 
 [suse]
-opensuse152	ansible_ssh_host=10.172.1.189
+opensuse152	ansible_ssh_host=10.172.1.189	owner=pve1
+
+
+[jenkins]
+jenkins1    ansible_ssh_host=10.172.1.45  owner=dev2
+jenkins2    ansible_ssh_host=10.172.1.111 ovner=pve2
+jens1       ansible_ssh_host=10.172.1.48 ovner=dev2
+jnt-n1-ub1804       ansible_ssh_host=10.172.1.180 ovner=pve1
+
+[terraform]
+tf1         ansible_ssh_host=10.172.1.46  owner=dev2

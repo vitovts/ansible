@@ -1,0 +1,26 @@
+---
+# Playbook for update and upgrade ProxMox > variables
+- name: Update and Upgrade ProxMox
+  hosts: "{{ pve_host }}" 
+  gather_facts: no
+  become: yes  #sudo
+
+  vars_prompt:
+    - name: "pve_host"
+      prompt: "Enter hostname PVE (pve_host): "
+      default: pve1
+      private: no
+
+  tasks:
+    - name: UPDATE (apt update -y)
+      apt:
+        update_cache: yes
+      register: apt_update
+    - debug: msg="{{ apt_update }}"
+
+    - name: UPGRADE (apt upgrade -y)
+      apt:
+        upgrade: 'yes'
+      register: apt_upgrade
+    - debug: msg="{{ apt_upgrade }}"
+    

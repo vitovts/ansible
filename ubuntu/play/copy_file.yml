@@ -1,0 +1,12 @@
+---
+# --- Playbook for copy files
+- name: COPY FILES
+  hosts: ub1604
+  become: yes  #sudo
+
+  tasks:
+    - name: copy to file
+      copy:
+        src: ~/pbcopy
+        dest: ~/
+        mode: 0777

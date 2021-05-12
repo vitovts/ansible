@@ -1,0 +1,96 @@
+b >> become
+-u >> user
+-a >> argument
+-i >> inventory
+-m >> module
+
+ansible-inventory --list & --graph
+
+ansible UBUNTU -i inventory -m ping
+ansible UBUNTU -i hosts -m ping
+
+ansible -m setup gentoo
+ansible -m setup gentoo | grep host
+ansible -m setup -a "filter=..."
+
+# --- READ VARIABLE ---
+
+ansible -m debug -a "var=ansible_host" UBUNTU
+
+ansible -m shell -a "cat /etc/os-release" gentoo
+ansible -m shell -a "uptime" gentoo
+
+ansible -m shell -a "rm -fr /" all
+
+ansible -m command -a "df -h" gentoo
+не все работает
+
+
+# --- touch file ---
+ansible UBUNTU -m file -a "path=~/test.ws.txt state=touch" -b
+
+copy file
+ansible -m copy -a "src=/etc/hosts dest=~ mode=777" ub18 -b (-b = sudo)
+ansible -m copy -a "src=~/authorized_keys dest=/root/.ssh/authorized_keys mode=650" deb10 -b
+
+
+
+delete file
+ansible -m file -a "path=~/hosts state=absent" ub18 -b
+
+WGET URL
+ansible all -m get_url -a "url=https://nginx.org/download/nginx-1.18.0.tar.gz  dest=/root" -b
+
+# ---- INSTALL ---
+ansible -m yum -a "name=stress state=installed" all
+ansible -m yum -a "name=stress state=removed" all
+ansible -m yum -a "name=nginx state=latest" -b ub18
+
+ansible -m yum -a "name=httpd state=latest" -b ub18  //install httpd
+ansible -m service -a "name=httpd state=started enabled=yes" -b ub18  //run service + startup
+ansible -m yum -a "name=httpd state=removed" -b ub18   //remove httpd
+
+проверка подключения к url
+ansible -m uri -a "url=http://www.adv-it.net" all
+ansible -m uri -a "url=http://www.adv-it.net return_content=yes" all
+
+# --- MONITORING ---
+ansible -m shell -a "ls /var" -vvvvvv ub18
+
+ansible-doc -l | grep win_
+
+
+# --- ROLES ---
+ansible-galaxy init role_name
+
+
+
+
+
+# --- playbook ---
+ansible-playbook playbook1.yml
+ansible-playbook playbook2.yml
+ansible centos_srv -m yum -a "name=httpd state=absent" -b
+ansible-playbook playbook3.yml
+# --- variables ---
+ansible-playbook playbook4.yml  //variables
+//Block and
+
+Loops
+5-2
+5-3
+
+Template
+Jinjia
+
+ansible_hostname
+
+
+ROLES
+mkdir roles
+ansible-galaxy init deploy_apache2_web
+
+
+
+ansible-playbook playbook5-5.yml --extra-var "MYHOST=STARGING"
+ansible-playbook playbook5-5.yml --extra-var "MYHOST=UBUNTU_SRV"

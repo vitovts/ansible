@@ -1,0 +1,12 @@
+---
+- name: Ping ProxMox
+  hosts: proxmox
+  gather_facts: no
+  become: yes  #sudo
+
+
+  tasks:
+    - name: Ping to ProxMox
+      ping:
+        
+    

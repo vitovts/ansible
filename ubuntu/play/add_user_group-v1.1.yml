@@ -1,0 +1,24 @@
+---
+# --- Playbook for add user and group witch variables
+- name: CREATE USERS and GROUPS
+  hosts: UBUNTU
+  become: yes  #sudo
+
+  tasks:
+
+    - name: CREATE GROUPS
+      group:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - ws
+        - test
+
+    - name: CREATE USERS
+      user:
+        name: "{{ user }}"
+        shell: /bin/bash
+        groups: ws,test
+        append: yes
+        home: /home/{{ user }}
+        

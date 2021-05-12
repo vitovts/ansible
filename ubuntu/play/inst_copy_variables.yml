@@ -1,0 +1,28 @@
+---
+# --- Playbook from apt install to variable
+- name: Install pakages witch apt
+  hosts: ub1604
+  become: yes  #sudo
+
+  vars:
+    pakages:
+      - htop
+      - mc
+      - rsync
+      - tree
+      - curl
+    
+    file_src: /etc/hosts
+    file_dest: /root
+
+  tasks:
+    - name: Install packeges
+      apt:
+        pkg: "{{ pakages }}"
+        state: latest
+
+    - name: COPY FILES
+      copy:
+        src: "{{ file_src }}"
+        dest: "{{ file_dest }}"
+        mode: 0777
